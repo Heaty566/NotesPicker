@@ -1,0 +1,24 @@
+{
+        "name": "notespickers",
+        "version": "2.0.0",
+        "description": "A simple tool to pick your note easily",
+        "main": "index.js",
+        "scripts": {},
+        "repository": {
+                "type": "git",
+                "url": "git+https://github.com/Heaty566/NotesPicker.git"
+        },
+        "author": {
+                "name": "Pham Vinh Nhan (Haley Pham)",
+                "email": "heaty566@gmail.com",
+                "url": "https://github.com/Heaty566"
+        },
+        "license": "ISC",
+        "bugs": {
+                "url": "https://github.com/Heaty566/NotesPicker/issues"
+        },
+        "homepage": "https://github.com/Heaty566/NotesPicker#readme",
+        "devDependencies": {
+                "nodemon": "^2.0.4"
+        }
+}
