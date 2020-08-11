@@ -1,27 +1,52 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import "./App.css";
 import { Link } from "react-router-dom";
-import { Grid, Box } from "@material-ui/core";
+import axios from "axios";
+import UserSection from "./components/UserSection";
+import AuthUser from "./components/AuthUser";
+import Divider from "./helper/divider";
+import NotesCol from "./components/NotesCol";
+import { Grid, Paper } from "@material-ui/core";
 
 function App() {
+        const [name, setName] = useState(null);
+        const [isLogin, setLogin] = useState(false);
+        const [records, setRecords] = useState(null);
+        const [currentRecord, setCurrentRecord] = useState(0);
+        const [notes, setNotes] = useState([]);
+
         useEffect(() => {
-                window.gapi.signin2.render("my-signin2", {
-                        scope: "profile email",
-                        width: 240,
-                        height: 50,
-                        longtitle: true,
-                        theme: "dark",
-                });
+                async function fetch() {
+                        const {
+                                data: { data: records },
+                        } = await axios.get("/user/getRecords");
+                        const {
+                                data: { data: name },
+                        } = await axios.get("/user/me");
+                        if (name) setLogin(true);
+                        setRecords(records);
+                        setName(name);
+                }
+
+                fetch();
         }, []);
+
+        const handleOnLogout = useCallback(async () => {
+                const data = await axios.post("/user/logout");
+                setLogin(false);
+        }, [setLogin]);
+
         return (
                 <div className="App">
                         <Grid container className="container">
                                 <Grid
+                                        container
                                         item
-                                        xs={3}
+                                        lg={3}
+                                        md={4}
                                         style={{
                                                 minHeight: "100%",
-                                                background: "#34495e",
+                                                background: "#fefefe",
                                                 padding: "16px 24px",
                                                 display: "flex",
                                         }}
@@ -32,19 +57,21 @@ function App() {
                                                 <img
                                                         src={process.env.PUBLIC_URL + "/asset/image/logo.svg"}
                                                         style={{ height: "64px", objectFit: "cover" }}
+                                                        alt="Notes Picker"
                                                 />
                                         </Link>
-
-                                        <Grid container>
-                                                <Grid xs={8}>
-                                                        <button id="my-signin2"></button>
-                                                </Grid>
-                                                {/* <Grid xs={4}>22</Grid> */}
-                                                <Grid xs={4}></Grid>
-                                        </Grid>
+                                        <AuthUser handleOnLogout={handleOnLogout} name={name} isLogin={isLogin} />
+                                        <Divider />
+                                        <UserSection
+                                                value={currentRecord}
+                                                onChange={({ target }) => setCurrentRecord(target.value)}
+                                        />
+                                        <Divider />
+                                        <NotesCol />
                                 </Grid>
-                                <Grid item xs={9}>
+                                <Grid item lg={9} md={8}>
                                         test
+                                        <Paper elevation={3} />
                                 </Grid>
                         </Grid>
                 </div>

@@ -2,12 +2,12 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
 const { User } = require("../model/class/user");
 
-passport.serializeUser(function (profile, cb) {
-        cb(null, profile.googleId);
+passport.serializeUser(function (user, cb) {
+        cb(null, user);
 });
 
-passport.deserializeUser(function (profile, cb) {
-        cb(null, profile.googleId);
+passport.deserializeUser(function (user, cb) {
+        cb(null, user);
 });
 
 passport.use(

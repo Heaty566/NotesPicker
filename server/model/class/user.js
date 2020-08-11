@@ -1,9 +1,8 @@
 const { getDB } = require("../../app/db");
 const { Respond } = require("./respond");
-const { default: helmet } = require("helmet");
 
 module.exports.User = class User {
-        constructor(name, googleId) {
+        constructor({ name, googleId }) {
                 this.name = name;
                 this.googleId = googleId;
                 this.records = [];
@@ -16,14 +15,22 @@ module.exports.User = class User {
                         .join(" ");
         }
 
+        get _records() {
+                return this.records;
+        }
+
         static async createNewUser(name, googleId) {
-                const userInfo = new User(name, googleId);
+                const userInfo = new User({ name, googleId });
 
                 const newUser = await getDB().collection("users").insertOne(userInfo);
                 if (!newUser)
                         return new Respond({ status: 400, data: null, msg: "An error occurs during the process" });
 
                 return new Respond({ status: 200, data: newUser, msg: "Register successes" });
+        }
+
+        static convertClass(user) {
+                return new User(user);
         }
 
         static async getUser(googleId) {

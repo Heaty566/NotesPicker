@@ -20,6 +20,8 @@
                 "express": "^4.17.1",
                 "express-session": "^1.17.1",
                 "helmet": "^4.0.0",
+                "lodash": "^4.17.19",
+                "momentjs": "^2.0.0",
                 "mongodb": "^3.6.0",
                 "mongodb-uri": "^0.9.7",
                 "passport": "^0.4.1",
