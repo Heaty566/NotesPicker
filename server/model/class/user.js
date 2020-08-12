@@ -5,7 +5,17 @@ module.exports.User = class User {
         constructor({ name, googleId }) {
                 this._name = name;
                 this.googleId = googleId;
-                this.records = [];
+                this.lists = [];
+        }
+
+        static getClassUser({ name, googleId, lists }) {
+                const user = new User({ name, googleId });
+                user.lists = lists;
+                return user;
+        }
+
+        addNewNote(notes) {
+                console.log(notes);
         }
 
         set _name(value) {
@@ -19,7 +29,7 @@ module.exports.User = class User {
                         .join(" ");
         }
 
-        get _records() {
+        get _lists() {
                 return this.records;
         }
 

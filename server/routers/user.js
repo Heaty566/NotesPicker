@@ -17,4 +17,12 @@ router.get("/getRecords", (req, res) => {
         res.status(200).json({ data: user._records });
 });
 
+router.post("/addNewNote", (req, res) => {
+        console.log(req.body);
+        console.log(req.session.passport);
+        if (!req.session.passport) return res.status(400).json({ msg: "You have to login before saving your note" });
+        const user = User.getClassUser(_.pick(req.session.passport.user, ["name", "googleId", "lists"]));
+        console.log(user);
+});
+
 module.exports = router;

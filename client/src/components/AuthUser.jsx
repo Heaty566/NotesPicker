@@ -4,7 +4,7 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Close } from "@material-ui/icons";
 import { Grid, Button, Paper } from "@material-ui/core";
 
-const AuthUser = ({ isLogin, name, handleOnLogout }) => {
+const AuthUser = ({ isLogin, username, handleOnLogout }) => {
         if (!isLogin)
                 return (
                         <Grid container>
@@ -39,7 +39,7 @@ const AuthUser = ({ isLogin, name, handleOnLogout }) => {
                                                 color: "#fefefe",
                                         }}
                                 >
-                                        {name}
+                                        {username}
                                 </Paper>
                         </Grid>
                         <Grid xs={4} item container justify="center" alignItems="center">

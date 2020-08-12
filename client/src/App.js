@@ -5,23 +5,15 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import Controller from "./presentations/Controller";
-import { Grid } from "@material-ui/core";
+import { Grid, Divider } from "@material-ui/core";
 
 function App() {
-        const [name, setName] = useState(null);
+        const [username, setUsername] = useState(null);
         const [isLogin, setLogin] = useState(false);
-        const [records, setRecords] = useState([]);
+        const [lists, setLists] = useState([]);
         const [currentRecord, setCurrentRecord] = useState(0);
-        const [noteLength, setNoteLength] = useState(3);
-        const [notes, setNotes] = useState([]);
-
-        useEffect(() => {
-                const items = Array.from({ length: noteLength }, () => ({
-                        name: React.createRef(""),
-                        data: React.createRef(""),
-                }));
-                setNotes(items);
-        }, []);
+        const noteName = useRef("");
+        const [notes, setNotes] = useState([{ name: React.createRef(""), data: React.createRef("") }]);
 
         useEffect(() => {
                 async function fetch() {
@@ -36,16 +28,62 @@ function App() {
                                 toast.success(msg);
                                 setLogin(true);
                         }
-                        setRecords(records);
-                        setName(name);
+                        setLists(records);
+                        setUsername(name);
                 }
 
                 fetch();
         }, []);
 
-        const handleOnChangeNotes = (index, input) => {
-                notes[index][input.name].current = input.value;
-        };
+        const handleOnDeleteNotes = useCallback(
+                (index) => {
+                        if (notes.length > 1) setNotes((item) => item.filter((item, itemIndex) => itemIndex !== index));
+                        else toast.error("You can't delete this note");
+                },
+                [notes]
+        );
+
+        const handleOnAddNotes = useCallback(() => {
+                setNotes((item) => [...item, { name: React.createRef(""), data: React.createRef("") }]);
+        }, []);
+
+        const handleOnChangeNotes = useCallback(
+                (index, input) => {
+                        notes[index][input.name].current = input.value;
+
+                        if (!notes[index + 1]) handleOnAddNotes();
+
+                        if (
+                                !notes[index]["name"].current &&
+                                !notes[index + 1]["name"].current &&
+                                !notes[index + 1]["data"].current
+                        )
+                                handleOnDeleteNotes(index + 1);
+                },
+                [handleOnDeleteNotes, handleOnAddNotes, notes]
+        );
+
+        const handleOnSaveNote = useCallback(async () => {
+                const nameNote = typeof noteName.current === "object" ? "" : noteName.current;
+                const data = notes.map((item) => {
+                        return {
+                                name: typeof item["name"].current === "object" ? "" : item["name"].current,
+                                data: typeof item["data"].current === "object" ? "" : item["data"].current,
+                        };
+                });
+
+                await axios.post(
+                        "/user/addNewNote",
+                        { noteName: nameNote, data: data },
+                        {
+                                headers: {
+                                        "Content-Type": "application/json",
+                                },
+                        }
+                );
+                // .then(({ data: { msg } }) => toast.success(msg))
+                // .catch(({ response: { data: { msg = "" } } }) => toast.error(msg));
+        }, []);
 
         const handleOnLogout = useCallback(async () => {
                 const {
@@ -61,7 +99,7 @@ function App() {
                         <Grid container className="container">
                                 <ToastContainer
                                         position="top-right"
-                                        autoClose={3000}
+                                        autoClose={4000}
                                         hideProgressBar={false}
                                         newestOnTop={false}
                                         closeOnClick
@@ -72,16 +110,21 @@ function App() {
                                 />
                                 <Controller
                                         //
-                                        name={name}
+                                        username={username}
                                         isLogin={isLogin}
                                         handleOnLogout={handleOnLogout}
                                         //
-                                        records={records}
-                                        currentRecord={currentRecord}
-                                        handleOnChangeRecord={({ target }) => setCurrentRecord(target.value)}
+                                        lists={lists}
+                                        noteName={noteName}
+                                        handleOnChangeNoteName={({ target }) => (noteName.current = target.value)}
+                                        handleOnSaveNote={handleOnSaveNote}
+                                        currentList={currentRecord}
+                                        handleOnChangeList={({ target }) => setCurrentRecord(target.value)}
                                         //
                                         notes={notes}
                                         handleOnChangeNotes={handleOnChangeNotes}
+                                        handleOnDeleteNotes={handleOnDeleteNotes}
+                                        handleOnAddNotes={handleOnAddNotes}
                                 />
                         </Grid>
                 </React.Fragment>

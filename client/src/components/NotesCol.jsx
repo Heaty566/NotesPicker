@@ -1,13 +1,13 @@
 import React from "react";
-import { Grid, Button, TextField } from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
+import { Grid, Button, TextField, Fab } from "@material-ui/core";
+import { Delete, Add as AddIcon } from "@material-ui/icons";
 
-const NotesCol = ({ values = [], handleOnChange, handleOnDelete }) => {
+const NotesCol = ({ values = [], handleOnChange, handleOnDelete, handleOnAdd }) => {
         return (
                 <Grid container>
                         {values.map((item, index) => {
                                 return (
-                                        <Grid key={index} container spacing={1} style={{ marginBottom: "1px" }}>
+                                        <Grid key={index} container spacing={1} style={{ marginBottom: "10px" }}>
                                                 <Grid item md={3}>
                                                         <TextField
                                                                 variant="standard"
@@ -22,10 +22,10 @@ const NotesCol = ({ values = [], handleOnChange, handleOnDelete }) => {
                                                         <TextField
                                                                 variant="standard"
                                                                 name="data"
+                                                                ref={item["data"]}
                                                                 onChange={({ target }) => handleOnChange(index, target)}
                                                                 label={`Data ${index + 1}`}
                                                                 size="small"
-                                                                // value={item.current["data"]}
                                                         />
                                                 </Grid>
                                                 <Grid item md={4} container alignItems="center" justify="center">
@@ -41,6 +41,11 @@ const NotesCol = ({ values = [], handleOnChange, handleOnDelete }) => {
                                         </Grid>
                                 );
                         })}
+                        <Grid container justify="center">
+                                <Fab color="primary" aria-label="add" size="small" onClick={handleOnAdd}>
+                                        <AddIcon />
+                                </Fab>
+                        </Grid>
                 </Grid>
         );
 };

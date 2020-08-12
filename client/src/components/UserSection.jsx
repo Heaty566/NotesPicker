@@ -1,32 +1,64 @@
 import React from "react";
 
 import { Grid } from "@material-ui/core";
-import { FormControl, MenuItem, Select, Button } from "@material-ui/core";
-import { Save } from "@material-ui/icons";
+import { MenuItem, Select, Button, TextField, Typography } from "@material-ui/core";
+import { Save, ImportExport } from "@material-ui/icons";
 
-const UserSection = ({ currentValue, handleOnChange, values = [] }) => {
+const UserSection = ({
+        currentList,
+        handleOnChangeLists,
+        lists = [],
+        noteName,
+        handleChangeNoteName,
+        handleOnSaveNote,
+}) => {
         return (
                 <Grid container spacing={1}>
-                        <Grid item md={8}>
-                                <FormControl style={{ background: "#fefefe", padding: "2px", width: "100%" }}>
+                        <Grid container item>
+                                <Typography variant="h5">Menu</Typography>
+                        </Grid>
+                        <Grid container item justify="center" alignItems="center" spacing={1}>
+                                <Grid item md={8}>
                                         <Select
-                                                value={currentValue}
-                                                onChange={handleOnChange}
-                                                displayEmpty
-                                                inputProps={{ "aria-label": "Without label" }}
+                                                value={currentList}
+                                                onChange={handleOnChangeLists}
+                                                style={{ width: "100%" }}
                                         >
                                                 <MenuItem value={0}>Current Project</MenuItem>
-                                                {values !== null &&
-                                                        values.map((item) => {
+                                                {lists !== null &&
+                                                        lists.map((item) => {
                                                                 return <MenuItem value={0}>Current Project</MenuItem>;
                                                         })}
                                         </Select>
-                                </FormControl>
+                                </Grid>
+                                <Grid item md={4} container justify="center">
+                                        <Button variant="contained" color="primary" startIcon={<ImportExport />}>
+                                                Import
+                                        </Button>
+                                </Grid>
                         </Grid>
-                        <Grid item md={4} container justify="center">
-                                <Button variant="contained" color="primary" startIcon={<Save />}>
-                                        Save
-                                </Button>
+                        <Grid container item spacing={1} alignItems="center" justify="center">
+                                <Grid item md={8}>
+                                        <TextField
+                                                style={{ width: "100%" }}
+                                                variant="standard"
+                                                ref={noteName}
+                                                onChange={handleChangeNoteName}
+                                                name="name"
+                                                size="small"
+                                                label="Note Name"
+                                        />
+                                </Grid>
+                                <Grid item md={4} container justify="center">
+                                        <Button
+                                                onClick={handleOnSaveNote}
+                                                variant="contained"
+                                                color="primary"
+                                                startIcon={<Save />}
+                                        >
+                                                Save
+                                        </Button>
+                                </Grid>
                         </Grid>
                 </Grid>
         );

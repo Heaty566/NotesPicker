@@ -6,22 +6,25 @@ import UserSection from "../components/UserSection";
 import { Link } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 
-let count = 0;
 const Controller = ({
         //Auth User
-        name,
+        username,
         isLogin,
         handleOnLogout,
 
         //User Section
-        records,
-        currentRecord,
-        handleOnChangeRecord,
+        lists,
+        currentList,
+        handleOnChangeList,
+        noteName,
+        handleOnSaveNote,
+        handleOnChangeNoteName,
 
         //Notes Column
         notes,
         handleOnChangeNotes,
         handleOnDeleteNotes,
+        handleOnAddNotes,
 }) => {
         return (
                 <Grid
@@ -45,13 +48,16 @@ const Controller = ({
                                         alt="Notes Picker"
                                 />
                         </Link>
-                        <AuthUser handleOnLogout={handleOnLogout} name={name} isLogin={isLogin} />
+                        <AuthUser handleOnLogout={handleOnLogout} username={username} isLogin={isLogin} />
 
                         <Divider />
                         <UserSection
-                                currentValue={currentRecord}
-                                handleOnChange={handleOnChangeRecord}
-                                values={records}
+                                lists={lists}
+                                currentList={currentList}
+                                handleOnChangeLists={handleOnChangeList}
+                                noteName={noteName}
+                                handleChangeNoteName={handleOnChangeNoteName}
+                                handleOnSaveNote={handleOnSaveNote}
                         />
 
                         <Divider />
@@ -59,6 +65,7 @@ const Controller = ({
                                 values={notes}
                                 handleOnChange={handleOnChangeNotes}
                                 handleOnDelete={handleOnDeleteNotes}
+                                handleOnAdd={handleOnAddNotes}
                         />
                 </Grid>
         );

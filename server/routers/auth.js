@@ -9,8 +9,12 @@ router.post("/logout", (req, res) => {
 
 router.get("/auth/google", passport.authenticate("google", { scope: ["profile"] }));
 
-router.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: "/home" }), function (req, res) {
-        res.redirect(`${process.env.CLIENT_URL}/home`);
-});
+router.get(
+        "/auth/google/callback",
+        passport.authenticate("google", { failureRedirect: `${process.env.CLIENT_URL}/home` }),
+        function (req, res) {
+                res.redirect(`${process.env.CLIENT_URL}/home`);
+        }
+);
 
 module.exports = router;
