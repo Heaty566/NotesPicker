@@ -3,9 +3,13 @@ const { Respond } = require("./respond");
 
 module.exports.User = class User {
         constructor({ name, googleId }) {
-                this.name = name;
+                this._name = name;
                 this.googleId = googleId;
                 this.records = [];
+        }
+
+        set _name(value) {
+                this.name = value.toLowerCase();
         }
 
         get _name() {

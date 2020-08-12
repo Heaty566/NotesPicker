@@ -44,7 +44,7 @@ const AuthUser = ({ isLogin, name, handleOnLogout }) => {
                         </Grid>
                         <Grid xs={4} item container justify="center" alignItems="center">
                                 <Button
-                                        endIcon={<Close />}
+                                        startIcon={<Close />}
                                         style={{
                                                 background: "#dd4b39",
                                                 color: "#fefefe",

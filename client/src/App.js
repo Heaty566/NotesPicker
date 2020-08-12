@@ -1,29 +1,41 @@
-import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import "./App.css";
-import { Link } from "react-router-dom";
+
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
-import UserSection from "./components/UserSection";
-import AuthUser from "./components/AuthUser";
-import Divider from "./helper/divider";
-import NotesCol from "./components/NotesCol";
-import { Grid, Paper } from "@material-ui/core";
+import "react-toastify/dist/ReactToastify.css";
+import Controller from "./presentations/Controller";
+import { Grid } from "@material-ui/core";
 
 function App() {
         const [name, setName] = useState(null);
         const [isLogin, setLogin] = useState(false);
-        const [records, setRecords] = useState(null);
+        const [records, setRecords] = useState([]);
         const [currentRecord, setCurrentRecord] = useState(0);
+        const [noteLength, setNoteLength] = useState(3);
         const [notes, setNotes] = useState([]);
+
+        useEffect(() => {
+                const items = Array.from({ length: noteLength }, () => ({
+                        name: React.createRef(""),
+                        data: React.createRef(""),
+                }));
+                setNotes(items);
+        }, []);
 
         useEffect(() => {
                 async function fetch() {
                         const {
                                 data: { data: records },
                         } = await axios.get("/user/getRecords");
+
                         const {
-                                data: { data: name },
+                                data: { data: name, msg },
                         } = await axios.get("/user/me");
-                        if (name) setLogin(true);
+                        if (name) {
+                                toast.success(msg);
+                                setLogin(true);
+                        }
                         setRecords(records);
                         setName(name);
                 }
@@ -31,50 +43,48 @@ function App() {
                 fetch();
         }, []);
 
+        const handleOnChangeNotes = (index, input) => {
+                notes[index][input.name].current = input.value;
+        };
+
         const handleOnLogout = useCallback(async () => {
-                const data = await axios.post("/user/logout");
+                const {
+                        data: { msg },
+                } = await axios.post("/user/logout");
+                toast.success(msg);
+
                 setLogin(false);
         }, [setLogin]);
 
         return (
-                <div className="App">
+                <React.Fragment>
                         <Grid container className="container">
-                                <Grid
-                                        container
-                                        item
-                                        lg={3}
-                                        md={4}
-                                        style={{
-                                                minHeight: "100%",
-                                                background: "#fefefe",
-                                                padding: "16px 24px",
-                                                display: "flex",
-                                        }}
-                                        alignItems="center"
-                                        direction="column"
-                                >
-                                        <Link to="/home" className="m-b-2">
-                                                <img
-                                                        src={process.env.PUBLIC_URL + "/asset/image/logo.svg"}
-                                                        style={{ height: "64px", objectFit: "cover" }}
-                                                        alt="Notes Picker"
-                                                />
-                                        </Link>
-                                        <AuthUser handleOnLogout={handleOnLogout} name={name} isLogin={isLogin} />
-                                        <Divider />
-                                        <UserSection
-                                                value={currentRecord}
-                                                onChange={({ target }) => setCurrentRecord(target.value)}
-                                        />
-                                        <Divider />
-                                        <NotesCol />
-                                </Grid>
-                                <Grid item lg={9} md={8}>
-                                        test
-                                        <Paper elevation={3} />
-                                </Grid>
+                                <ToastContainer
+                                        position="top-right"
+                                        autoClose={3000}
+                                        hideProgressBar={false}
+                                        newestOnTop={false}
+                                        closeOnClick
+                                        rtl={false}
+                                        pauseOnFocusLoss
+                                        draggable
+                                        pauseOnHover
+                                />
+                                <Controller
+                                        //
+                                        name={name}
+                                        isLogin={isLogin}
+                                        handleOnLogout={handleOnLogout}
+                                        //
+                                        records={records}
+                                        currentRecord={currentRecord}
+                                        handleOnChangeRecord={({ target }) => setCurrentRecord(target.value)}
+                                        //
+                                        notes={notes}
+                                        handleOnChangeNotes={handleOnChangeNotes}
+                                />
                         </Grid>
-                </div>
+                </React.Fragment>
         );
 }
 
