@@ -1,5 +1,9 @@
 const { getDB } = require("../../app/db");
-const { Respond } = require("./respond");
+const { Response } = require("./response");
+const colors = require("colors");
+
+const Joi = require("@hapi/joi");
+const { times } = require("lodash");
 
 module.exports.User = class User {
         constructor({ name, googleId }) {
@@ -14,8 +18,49 @@ module.exports.User = class User {
                 return user;
         }
 
-        addNewNote(notes) {
-                console.log(notes);
+        async addNewNote(notes) {
+                const schema = Joi.object({
+                        name: Joi.string().min(1).max(100).trim().label("Note's name").required(),
+                        data: Joi.array().items(
+                                Joi.object({
+                                        name: Joi.string().min(1).max(30).trim().label("Note").required(),
+                                        data: Joi.string().min(1).max(1000).label("Note's data").required(),
+                                })
+                                        .label("Data")
+                                        .required()
+                        ),
+                });
+
+                const { error, value } = schema.validate(notes, { abortEarly: false });
+                if (error) return new Response(400, null, error.details[0].message);
+
+                const index = this.lists.findIndex((item) => item.name === notes.name);
+
+                const query = index !== -1 ? { $set: { [`lists.${index}`]: value } } : { $push: { lists: value } };
+                const newNote = await getDB().collection("users").updateOne({ googleId: this.googleId }, query);
+                if (!newNote) {
+                        console.log(colors.red("Server can't update note"));
+                        return new Response(400, null, "Server error");
+                }
+
+                const user = await getDB().collection("users").findOne({ googleId: this.googleId });
+                this.lists = user.lists;
+                return new Response(200, null, "Note is updated");
+        }
+
+        async deleteNote(noteId) {
+                const updateNote = this.lists.filter((_, index) => index !== +noteId);
+
+                const newNote = await getDB()
+                        .collection("users")
+                        .updateOne({ googleId: this.googleId }, { $set: { lists: updateNote } });
+                if (!newNote) {
+                        console.log(colors.red("Server can't update note"));
+                        return new Response(400, null, "Server error");
+                }
+                const user = await getDB().collection("users").findOne({ googleId: this.googleId });
+                this.lists = user.lists;
+                return new Response(200, null, "Note is updated");
         }
 
         set _name(value) {
@@ -30,21 +75,17 @@ module.exports.User = class User {
         }
 
         get _lists() {
-                return this.records;
+                return this.lists;
         }
 
         static async createNewUser(name, googleId) {
                 const userInfo = new User({ name, googleId });
 
                 const newUser = await getDB().collection("users").insertOne(userInfo);
-                if (!newUser)
-                        return new Respond({ status: 400, data: null, msg: "An error occurs during the process" });
+                if (!newUser) return new Response({ status: 400, data: null, msg: "An error occurs during the process" });
 
-                return new Respond({ status: 200, data: newUser, msg: "Register successes" });
-        }
-
-        static convertClass(user) {
-                return new User(user);
+                console.log(colors.green(`New user created with the id: ${newUser.insertId}`));
+                return new Response({ status: 200, data: newUser, msg: "Register successes" });
         }
 
         static async getUser(googleId) {

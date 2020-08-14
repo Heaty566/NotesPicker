@@ -27,7 +27,7 @@ module.exports = function (app) {
         app.use((req, res, next) => {
                 req.header("Access-Control-Allow-Origin", process.env.CLIENT_URL);
                 req.header("Access-Control-Allow-Headers", "*");
-                req.session.isUpdate = true;
+                if (req.session.isUpdate === undefined) req.session.isUpdate = true;
                 next();
         });
 

@@ -12,6 +12,7 @@
                 "nodemon": "^2.0.4"
         },
         "dependencies": {
+                "@hapi/joi": "^17.1.1",
                 "colors": "^1.4.0",
                 "compression": "^1.7.4",
                 "connect-mongodb-session": "^2.4.0",

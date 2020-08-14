@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { Close } from "@material-ui/icons";
-import { Grid, Button, Paper } from "@material-ui/core";
+import { Grid, Chip } from "@material-ui/core";
+import { Close, Face as FaceIcon } from "@material-ui/icons";
+import InputButton from "../components/common/InputButton";
 
-const AuthUser = ({ isLogin, username, handleOnLogout }) => {
+import { FormContext } from "../containers/Controller";
+
+const AuthUser = ({ username, handleOnLogout }) => {
+        const { isLogin } = useContext(FormContext);
+
         if (!isLogin)
                 return (
                         <Grid container>
@@ -17,42 +22,23 @@ const AuthUser = ({ isLogin, username, handleOnLogout }) => {
 
         return (
                 <Grid container spacing={1}>
-                        <Grid
-                                xs={8}
-                                item
-                                style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        fontWeight: "bold",
-                                }}
-                        >
-                                <Paper
-                                        variant="elevation"
-                                        style={{
-                                                display: "flex",
-                                                height: "100%",
-                                                width: "100%",
-                                                justifyContent: "center",
-                                                alignItems: "center",
-                                                background: "#34495e",
-                                                color: "#fefefe",
-                                        }}
-                                >
-                                        {username}
-                                </Paper>
+                        <Grid xs={8} item className="flex-center">
+                                <Chip
+                                        className="max-dimension"
+                                        style={{ fontSize: "14px" }}
+                                        icon={<FaceIcon />}
+                                        label={username}
+                                        color="primary"
+                                        clickable
+                                />
                         </Grid>
                         <Grid xs={4} item container justify="center" alignItems="center">
-                                <Button
-                                        startIcon={<Close />}
-                                        style={{
-                                                background: "#dd4b39",
-                                                color: "#fefefe",
-                                        }}
+                                <InputButton
+                                        StartIcon={<Close />}
+                                        color="secondary"
                                         onClick={handleOnLogout}
-                                >
-                                        Logout
-                                </Button>
+                                        label="Logout"
+                                />
                         </Grid>
                 </Grid>
         );

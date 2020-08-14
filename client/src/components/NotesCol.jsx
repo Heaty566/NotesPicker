@@ -1,52 +1,60 @@
 import React from "react";
-import { Grid, Button, TextField, Fab } from "@material-ui/core";
+import { Grid, Fab } from "@material-ui/core";
 import { Delete, Add as AddIcon } from "@material-ui/icons";
+import InputButton from "./common/InputButton";
 
-const NotesCol = ({ values = [], handleOnChange, handleOnDelete, handleOnAdd }) => {
+import Input from "./common/Input";
+
+const NotesCol = ({ values = [], onSubmit, handleOnDelete, handleOnAdd }) => {
         return (
-                <Grid container>
-                        {values.map((item, index) => {
-                                return (
-                                        <Grid key={index} container spacing={1} style={{ marginBottom: "10px" }}>
-                                                <Grid item md={3}>
-                                                        <TextField
-                                                                variant="standard"
-                                                                name="name"
-                                                                ref={item["name"]}
-                                                                label={`Note ${index + 1}`}
-                                                                size="small"
-                                                                onChange={({ target }) => handleOnChange(index, target)}
-                                                        />
-                                                </Grid>
-                                                <Grid item md={5}>
-                                                        <TextField
-                                                                variant="standard"
-                                                                name="data"
-                                                                ref={item["data"]}
-                                                                onChange={({ target }) => handleOnChange(index, target)}
-                                                                label={`Data ${index + 1}`}
-                                                                size="small"
-                                                        />
-                                                </Grid>
-                                                <Grid item md={4} container alignItems="center" justify="center">
-                                                        <Button
-                                                                variant="contained"
-                                                                color="secondary"
-                                                                onClick={({ target }) => handleOnDelete(index, target)}
-                                                                startIcon={<Delete />}
+                <form id="myform" onSubmit={onSubmit}>
+                        <Grid container>
+                                {values.map((item, index) => {
+                                        return (
+                                                <Grid
+                                                        key={item.id}
+                                                        container
+                                                        spacing={1}
+                                                        style={{ marginBottom: "8px" }}
+                                                >
+                                                        <Grid item xs={3}>
+                                                                <Input
+                                                                        name={`notes[${index}].name`}
+                                                                        defaultValue=""
+                                                                        label={`Note ${index + 1}`}
+                                                                />
+                                                        </Grid>
+                                                        <Grid item xs={5}>
+                                                                <Input
+                                                                        name={`notes[${index}].data`}
+                                                                        defaultValue=""
+                                                                        label={`Data ${index + 1}`}
+                                                                />
+                                                        </Grid>
+                                                        <Grid
+                                                                item
+                                                                xs={4}
+                                                                container
+                                                                alignItems="center"
+                                                                justify="center"
                                                         >
-                                                                Delete
-                                                        </Button>
+                                                                <InputButton
+                                                                        onClick={() => handleOnDelete(index)}
+                                                                        StartIcon={<Delete />}
+                                                                        color="secondary"
+                                                                        label="Delete"
+                                                                />
+                                                        </Grid>
                                                 </Grid>
-                                        </Grid>
-                                );
-                        })}
-                        <Grid container justify="center">
-                                <Fab color="primary" aria-label="add" size="small" onClick={handleOnAdd}>
-                                        <AddIcon />
-                                </Fab>
+                                        );
+                                })}
+                                <Grid container justify="center">
+                                        <Fab color="primary" aria-label="add" size="small" onClick={handleOnAdd}>
+                                                <AddIcon />
+                                        </Fab>
+                                </Grid>
                         </Grid>
-                </Grid>
+                </form>
         );
 };
 
