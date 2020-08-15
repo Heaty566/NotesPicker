@@ -19,7 +19,7 @@ const Controller = () => {
         const [lists, setLists] = useState([]);
         const [local] = useState(localStorage.getItem("notes"));
 
-        const [notes] = useState(local ? JSON.parse(local) : [{ name: "", data: "" }]);
+        const [notes] = useState(local !== "undefined" ? JSON.parse(local) : [{ name: "", data: "" }]);
         const { control, getValues, handleSubmit, setValue, watch } = useForm({
                 defaultValues: {
                         notes: notes,
@@ -34,7 +34,7 @@ const Controller = () => {
         });
 
         useEffect(() => {
-                setValue("notes", local ? JSON.parse(local) : [{ name: "", data: "" }]);
+                setValue("notes", local !== "undefined" ? JSON.parse(local) : [{ name: "", data: "" }]);
         }, [setValue, local]);
 
         useEffect(() => {
@@ -134,7 +134,8 @@ const Controller = () => {
                                 <Grid
                                         container
                                         item
-                                        xs={6}
+                                        xs={12}
+                                        sm={6}
                                         md={4}
                                         lg={3}
                                         style={{
@@ -172,7 +173,7 @@ const Controller = () => {
                                                 />
                                         </FormContext.Provider>
                                 </Grid>
-                                <Grid container xs={6} md={8} lg={9} item>
+                                <Grid container xs={12} sm={6} md={8} lg={9} item>
                                         <WorkSpace data={getValues().notes} />
                                 </Grid>
                         </Grid>
