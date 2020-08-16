@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
 
-const PageHead = ({ pageDescription, pageKeyWords, pageTitle, pageImageURL }) => {
+const PageHead = ({ pageDescription, pageKeyWords, pageTitle, pageImageURL, pageURL }) => {
         return (
                 <Helmet>
                         {/* config head start */}
@@ -11,9 +11,10 @@ const PageHead = ({ pageDescription, pageKeyWords, pageTitle, pageImageURL }) =>
                         {/* config head end  */}
 
                         {/* config facebook start */}
-                        <meta name="og:tittle" content={pageTitle} />
-                        <meta name="og:description" content={pageDescription} />
                         <meta name="og:type" content="article" />
+                        <meta name="og:tittle" content={pageTitle} />
+                        <meta name="og:url" content={pageURL} />
+                        <meta name="og:description" content={pageDescription} />
                         <meta name="og:image" content={pageImageURL} />
                         {/* config facebook end  */}
 

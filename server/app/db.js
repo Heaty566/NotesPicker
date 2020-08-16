@@ -2,19 +2,13 @@ const mongodb = require("mongodb");
 const mongodbURI = require("mongodb-uri");
 const colors = require("colors");
 
-var _db;
+let _db;
 
 //initialized database
 module.exports = function () {
         mongodb.connect(process.env.MONGODB_URL, { useUnifiedTopology: true }, (error, result) => {
-                if (error) {
-                        console.log(colors.red(error));
-                        throw error;
-                }
-
                 const dbInfo = mongodbURI.parse(process.env.MONGODB_URL);
                 console.log(colors.green(`Connect to notespicker on host ${dbInfo.hosts[0].host}`));
-
                 _db = result.db("notespicker");
         });
 };

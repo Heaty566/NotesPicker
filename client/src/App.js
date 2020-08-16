@@ -14,7 +14,8 @@ function App() {
                                 pageTitle="Home"
                                 pageDescription="A small tool for picking up your notes or palettes quickly and easily, Notespicker can handle multiple notes and remainders at the same time."
                                 pageKeyWords="picker, note, colors, notespicker, palette, remainder, notes"
-                                pageImageURL="/asset/image/banner.png"
+                                pageImageURL="asset/image/banner.png"
+                                pageURL="https://notespicker.herokuapp.com/"
                         />
                         <ToastContainer
                                 position="top-right"

@@ -6,6 +6,6 @@
                 "GOOGLE_ID": "",
                 "GOOGLE_SECRET": "",
                 "MONGODB_URL": "",
-                "CLIENT_URL": "http://localhost:4000"
+                "CLIENT_URL": ""
         }
 }
