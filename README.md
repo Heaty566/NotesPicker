@@ -1,8 +1,10 @@
-![](/logo.svg)
+![](/github/banner.png)
 
 # NotesPicker
 A small tool for picking up your notes or palettes quickly and easily, **Notespicker** can handle multiple notes and reminders at the same time.
 This is also a big update for my [colors-picker](https://github.com/Heaty566/colors-picker) project
+
+![](/github/web.jpg)
 
 ---
 
@@ -20,10 +22,10 @@ This is also a big update for my [colors-picker](https://github.com/Heaty566/col
 ## How to run
 - git clone
 - npm i (with both client and server)
-- fill config file in server folder (.env)
+- fill config file in server folder (.env and nodemon.json)
 - npm start (running production mode)
 - npm start:dev (running development mode)
-
+- (You have to change proxy in package.json(react app) to allow nodejs povide session in case You want to run server and client seperately. You also can run server only which has public folder)
 ---
 
 ### Input and Example:
@@ -35,8 +37,7 @@ This is also a big update for my [colors-picker](https://github.com/Heaty566/col
 ---
 
 ## Project Issue
-- I tried to upload in Heroku. However, I got someting wrong with mongo-session I will deploy later :)
-
+- SEO with NEXT.JS
 ---
 
 ## Support
