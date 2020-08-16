@@ -1,9 +1,10 @@
 import React from "react";
 import { ToastContainer } from "react-toastify";
-import PageHead from "./utils/setHead";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+
+import PageHead from "./utils/setHead";
 import Controller from "./containers/Controller";
 
 function App() {

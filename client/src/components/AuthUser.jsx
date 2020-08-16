@@ -13,7 +13,7 @@ const AuthUser = ({ username, handleOnLogout }) => {
         if (!isLogin)
                 return (
                         <Grid container>
-                                <a className="google google__btn" href={`${process.env.REACT_APP_SERVER_URL}/user/auth/google`}>
+                                <a className="google google__btn" href={`${process.env.REACT_APP_SERVER_URL}/api/user/auth/google`}>
                                         <FontAwesomeIcon icon={faGoogle} style={{ marginRight: "8px" }} />
                                         <span>Login with Google+</span>
                                 </a>

@@ -13,7 +13,7 @@ module.exports = function () {
                 }
 
                 const dbInfo = mongodbURI.parse(process.env.MONGODB_URL);
-                console.log(colors.green(`Connect to ${dbInfo.database} on host ${dbInfo.hosts[0].host}`));
+                console.log(colors.green(`Connect to notespicker on host ${dbInfo.hosts[0].host}`));
 
                 _db = result.db("notespicker");
         });

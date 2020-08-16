@@ -15,7 +15,7 @@ passport.use(
                 {
                         clientID: process.env.GOOGLE_ID,
                         clientSecret: process.env.GOOGLE_SECRET,
-                        callbackURL: "/user/auth/google/callback",
+                        callbackURL: "/api/user/auth/google/callback",
                 },
                 async function (accessToken, refreshToken, profile, cb) {
                         const isUser = await User.getUser(profile.id);

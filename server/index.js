@@ -1,6 +1,7 @@
 const express = require("express");
 const colors = require("colors");
 
+require("dotenv").config();
 require("./service/password");
 const prod = require("./app/prod");
 const router = require("./app/router");

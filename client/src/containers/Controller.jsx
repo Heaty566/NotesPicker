@@ -1,15 +1,16 @@
 import React, { useState, useCallback, useEffect } from "react";
-import axios from "axios";
-import { toast } from "react-toastify";
-import Divider from "../components/common/Divider";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Grid } from "@material-ui/core";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 import AuthUser from "../components/AuthUser";
 import NotesCol from "../components/NotesCol";
 import UserSection from "../components/UserSection";
-import Logo from "../components/common/Logo";
 import WorkSpace from "../components/workspace";
+
+import Logo from "../components/common/Logo";
+import Divider from "../components/common/Divider";
 import clickSound from "../click.mp3";
 
 const FormContext = React.createContext();
@@ -49,10 +50,10 @@ const Controller = () => {
         }, [getValues, watcherNotes, isNeedUpdate]);
 
         useEffect(() => {
-                axios.get("/user/getRecords").then(({ data: { data: listNote } }) => {
+                axios.get("/api/user/getRecords").then(({ data: { data: listNote } }) => {
                         setLists(listNote);
                 });
-                axios.get("/user/me").then(({ data: { data: name, msg } }) => {
+                axios.get("/api/user/me").then(({ data: { data: name, msg } }) => {
                         if (name) {
                                 toast.success(msg);
                                 setUsername(name);
@@ -96,11 +97,11 @@ const Controller = () => {
                         return;
                 }
 
-                axios.delete(`/user/deleteNote/${getValues().selectNote}`)
+                axios.delete(`/api/user/deleteNote/${getValues().selectNote}`)
                         .then(({ data: { msg } }) => {
                                 toast.success(msg);
 
-                                axios.get("/user/getRecords").then(({ data: { data: listNote } }) => {
+                                axios.get("/api/user/getRecords").then(({ data: { data: listNote } }) => {
                                         setLists(listNote);
                                 });
                         })
@@ -109,7 +110,7 @@ const Controller = () => {
 
         const handleOnSubmitNotes = useCallback(({ name, notes }) => {
                 axios.post(
-                        "/user/addNewNote",
+                        "/api/user/addNewNote",
                         { name: name, data: notes },
                         {
                                 headers: {
@@ -119,7 +120,7 @@ const Controller = () => {
                 )
                         .then(({ data: { msg } }) => {
                                 toast.success(msg);
-                                axios.get("/user/getRecords").then(({ data: { data: listNote } }) => {
+                                axios.get("/api/user/getRecords").then(({ data: { data: listNote } }) => {
                                         setLists(listNote);
                                 });
                         })
@@ -127,7 +128,7 @@ const Controller = () => {
         }, []);
 
         const handleOnLogout = () => {
-                axios.post("/user/logout").then(({ data: { msg } }) => {
+                axios.post("/api/user/logout").then(({ data: { msg } }) => {
                         toast.success(msg);
                         setLogin(false);
                 });

@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express();
-const _ = require("lodash");
 const { updateUser } = require("../middleware/updateUser");
-const { User } = require("../model/class/user");
-const { use } = require("./auth");
 
 router.get("/me", [updateUser], (req, res) => {
         if (!req.session.passport) return res.status(200).json({ data: null });
