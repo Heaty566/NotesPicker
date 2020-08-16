@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { MenuItem, Select, Typography, Grid } from "@material-ui/core";
+import { MenuItem, Select, Typography, Grid, FormControlLabel, Checkbox } from "@material-ui/core";
 import { Save, ImportExport, Delete } from "@material-ui/icons";
 import { Controller } from "react-hook-form";
 
@@ -7,13 +7,19 @@ import { FormContext } from "../containers/Controller";
 import InputButton from "./common/InputButton";
 import Input from "./common/Input";
 
-const UserSection = ({ lists = [], onSubmit, handleOnDelete }) => {
+const UserSection = ({ lists = [], onSubmit, handleOnDelete, check, handleOnCheck }) => {
         const { control, isLogin } = useContext(FormContext);
 
         return (
                 <Grid container spacing={1}>
-                        <Grid container item>
+                        <Grid container item alignItems="center" justify="space-between">
                                 <Typography variant="h5">Menu</Typography>
+                                <FormControlLabel
+                                        value={check}
+                                        onClick={handleOnCheck}
+                                        control={<Checkbox name="copyName" color="primary" />}
+                                        label="Copy Name or Data"
+                                />
                         </Grid>
                         <Grid container item spacing={1} alignItems="center" justify="center">
                                 <Grid item xs={8}>

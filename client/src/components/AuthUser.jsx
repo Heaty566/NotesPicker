@@ -13,7 +13,7 @@ const AuthUser = ({ username, handleOnLogout }) => {
         if (!isLogin)
                 return (
                         <Grid container>
-                                <a className="google btn" href={`${process.env.REACT_APP_SERVER_URL}/user/auth/google`}>
+                                <a className="google google__btn" href={`${process.env.REACT_APP_SERVER_URL}/user/auth/google`}>
                                         <FontAwesomeIcon icon={faGoogle} style={{ marginRight: "8px" }} />
                                         <span>Login with Google+</span>
                                 </a>
@@ -33,12 +33,7 @@ const AuthUser = ({ username, handleOnLogout }) => {
                                 />
                         </Grid>
                         <Grid xs={4} item container justify="center" alignItems="center">
-                                <InputButton
-                                        StartIcon={<Close />}
-                                        color="secondary"
-                                        onClick={handleOnLogout}
-                                        label="Logout"
-                                />
+                                <InputButton StartIcon={<Close />} color="secondary" onClick={handleOnLogout} label="Logout" />
                         </Grid>
                 </Grid>
         );

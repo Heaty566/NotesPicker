@@ -1,20 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Grid, Button, Typography } from "@material-ui/core";
 import CopyToClipBoard from "react-copy-to-clipboard";
+
 import { formatString } from "../helper/helper";
-import soundClick from "../click.mp3";
 
-const WorkSpace = ({ data = [] }) => {
-        const handleOnClick = () => {
-                const sound = new Audio(soundClick);
-                sound.play();
-        };
-
+const WorkSpace = ({ data = [], handleOnCopy, copyName }) => {
         return (
                 <Grid container item className="workspace__container">
                         {data.map((item, index) => {
                                 return (
-                                        <CopyToClipBoard onCopy={() => handleOnClick(item.data)} key={index} text={item.data}>
+                                        <CopyToClipBoard onCopy={handleOnCopy} key={index} text={copyName ? item.name : item.data}>
                                                 <Button
                                                         className="workspace__btn"
                                                         variant="contained"

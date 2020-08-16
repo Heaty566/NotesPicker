@@ -6,6 +6,6 @@
                 "GOOGLE_ID": "226670845549-7uj3nf546o8gq8beir7pkqn7rdccup9o.apps.googleusercontent.com",
                 "GOOGLE_SECRET": "2naRcguYxsUVh01IrQ35Mfij",
                 "MONGODB_URL": "mongodb+srv://user:DLzAoGX3C6EDIcOn@cluster0.unh8z.mongodb.net/",
-                "CLIENT_URL": "http://localhost:3000"
+                "CLIENT_URL": "http://localhost:4000"
         }
 }

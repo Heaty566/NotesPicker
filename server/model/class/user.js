@@ -1,9 +1,7 @@
 const { getDB } = require("../../app/db");
 const { Response } = require("./response");
 const colors = require("colors");
-
 const Joi = require("@hapi/joi");
-const { times } = require("lodash");
 
 module.exports.User = class User {
         constructor({ name, googleId }) {
@@ -43,8 +41,6 @@ module.exports.User = class User {
                         return new Response(400, null, "Server error");
                 }
 
-                const user = await getDB().collection("users").findOne({ googleId: this.googleId });
-                this.lists = user.lists;
                 return new Response(200, null, "Note is updated");
         }
 
@@ -58,8 +54,6 @@ module.exports.User = class User {
                         console.log(colors.red("Server can't update note"));
                         return new Response(400, null, "Server error");
                 }
-                const user = await getDB().collection("users").findOne({ googleId: this.googleId });
-                this.lists = user.lists;
                 return new Response(200, null, "Note is updated");
         }
 

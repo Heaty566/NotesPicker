@@ -1,12 +1,11 @@
 import * as React from "react";
 import { Helmet } from "react-helmet";
-import { pageTitle as appName } from "../config/page.json";
 
 const PageHead = ({ pageDescription, pageKeyWords, pageTitle, pageImageURL }) => {
         return (
                 <Helmet>
                         {/* config head start */}
-                        <title>{`${pageTitle} | ${appName}`}</title>
+                        <title>{`${pageTitle} | Notespicker`}</title>
                         <meta name="description" content={pageDescription} />
                         <meta name="keywords" content={pageKeyWords} />
                         {/* config head end  */}

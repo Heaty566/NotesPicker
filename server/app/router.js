@@ -3,7 +3,7 @@ const cors = require("cors");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const passport = require("passport");
-
+const bodyParser = require("body-parser");
 const auth = require("../routers/auth");
 const user = require("../routers/user");
 
@@ -14,9 +14,10 @@ const store = new MongoDBStore({
 
 module.exports = function (app) {
         app.use(express.json());
-        app.use(passport.initialize());
-        app.use(cors());
-        app.set(express.static(process.cwd() + "/public"));
+        app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(cors({ credentials: true }));
+
+        app.use(express.static(process.cwd() + "/public"));
         app.use(
                 session({
                         secret: process.env.SESSION_SECRET,
@@ -24,6 +25,8 @@ module.exports = function (app) {
                         store: store,
                 })
         );
+        app.use(passport.initialize());
+
         app.use((req, res, next) => {
                 req.header("Access-Control-Allow-Origin", process.env.CLIENT_URL);
                 req.header("Access-Control-Allow-Headers", "*");
@@ -31,6 +34,9 @@ module.exports = function (app) {
                 next();
         });
 
-        app.use("/user", auth);
-        app.use("/user", user);
+        app.use("/api/user", auth);
+        app.use("/api/user", user);
+        app.get("/*", (req, res) => {
+                res.sendFile(process.cwd() + "/public/index.html");
+        });
 };

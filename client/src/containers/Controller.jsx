@@ -1,28 +1,33 @@
-import React, { useState, useCallback, useEffect, useContext } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Divider from "../components/common/Divider";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Grid } from "@material-ui/core";
+
 import AuthUser from "../components/AuthUser";
 import NotesCol from "../components/NotesCol";
 import UserSection from "../components/UserSection";
 import Logo from "../components/common/Logo";
+import WorkSpace from "../components/workspace";
+import clickSound from "../click.mp3";
 
-import WorkSpace from "./workspace";
 const FormContext = React.createContext();
 
 const Controller = () => {
         const [username, setUsername] = useState(null);
         const [isLogin, setLogin] = useState(false);
+
         const [isNeedUpdate, setNeedUpdate] = useState(false);
         const [lists, setLists] = useState([]);
+        const [isCopyName, setCopyName] = useState(false);
         const [local] = useState(localStorage.getItem("notes"));
 
         const [notes] = useState(local !== "undefined" ? JSON.parse(local) : [{ name: "", data: "" }]);
         const { control, getValues, handleSubmit, setValue, watch } = useForm({
                 defaultValues: {
                         notes: notes,
+                        copyName: false,
                 },
         });
 
@@ -128,6 +133,11 @@ const Controller = () => {
                 });
         };
 
+        const handleOnCopy = () => {
+                const sound = new Audio(clickSound);
+                sound.play();
+        };
+
         return (
                 <React.Fragment>
                         <Grid container className="container">
@@ -156,6 +166,8 @@ const Controller = () => {
                                                         lists={lists}
                                                         onSubmit={handleSubmit(handleOnImportNote)}
                                                         handleOnDelete={handleOnDeleteNote}
+                                                        check={isCopyName}
+                                                        handleOnCheck={() => setCopyName(!isCopyName)}
                                                 />
                                                 <Divider />
 
@@ -174,7 +186,7 @@ const Controller = () => {
                                         </FormContext.Provider>
                                 </Grid>
                                 <Grid container xs={12} sm={6} md={8} lg={9} item>
-                                        <WorkSpace data={getValues().notes} />
+                                        <WorkSpace data={getValues().notes} handleOnCopy={handleOnCopy} copyName={isCopyName} />
                                 </Grid>
                         </Grid>
                 </React.Fragment>
